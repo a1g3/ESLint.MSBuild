@@ -1,0 +1,1 @@
+[![Build Status](https://dev.azure.com/eslint-msbuild/ESLint.MSBuild/_apis/build/status/a1g3.ESLint.MSBuild?branchName=master)](https://dev.azure.com/eslint-msbuild/ESLint.MSBuild/_build/latest?definitionId=1&branchName=master)
