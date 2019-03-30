@@ -7,11 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-#if DEBUG
-using System.Runtime.CompilerServices;
-[assembly: InternalsVisibleTo("ESLint.MSBuild.Tests")]
-#endif
-
 namespace ESLint.MSBuild
 {
     public class ESLintTask : Task

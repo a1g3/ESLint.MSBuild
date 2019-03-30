@@ -8,8 +8,10 @@
     <Title>ESLint.MSBuild</Title>
     <PackageId>ESLint.MSBuild</PackageId>
     <Authors>Alex Gebhard</Authors>
-    <Version>1.0.0</Version>
-    <PackageVersion>1.0.0-alpha</PackageVersion>
+    <Version>1.0.0-alpha</Version>
+    <InformationalVersion>This is a prerelease package!</InformationalVersion>
+    <PackageProjectUrl>https://github.com/a1g3/ESLint.MSBuild</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/a1g3/ESLint.MSBuild/blob/master/LICENSE</PackageLicenseUrl>
     
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
