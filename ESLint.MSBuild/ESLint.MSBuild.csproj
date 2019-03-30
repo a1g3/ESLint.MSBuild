@@ -8,17 +8,19 @@
     <Title>ESLint.MSBuild</Title>
     <PackageId>ESLint.MSBuild</PackageId>
     <Authors>Alex Gebhard</Authors>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/a1g3/ESLint.MSBuild</PackageProjectUrl>
+    <Description>Runs ESLint when a project is built.</Description>
+    <PackageTags>eslint javascript lint linter msbuild</PackageTags>
     <Version>1.0.0-alpha</Version>
     <InformationalVersion>This is a prerelease package!</InformationalVersion>
-    <PackageProjectUrl>https://github.com/a1g3/ESLint.MSBuild</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/a1g3/ESLint.MSBuild/blob/master/LICENSE</PackageLicenseUrl>
     
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <!-- forces SDK to copy dependencies into build output to make packing easier -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   
   <ItemGroup>
