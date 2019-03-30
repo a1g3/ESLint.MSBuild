@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="ESLint.MSBuild.ESLintTask" AssemblyFile="..\tools\netstandard2.0\ESLint.MSBuild.dll" />
+
+  <PropertyGroup>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+      ESLintTask
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="ESLintTask" AfterTargets="Build">
+    <ESLint.MSBuild.ESLintTask ProjectPath="$(MSBuildProjectDirectory)"  />
+  </Target>
+</Project>
