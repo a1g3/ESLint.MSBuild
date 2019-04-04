@@ -13,7 +13,6 @@
     <PackageProjectUrl>https://github.com/a1g3/ESLint.MSBuild</PackageProjectUrl>
     <Description>Runs ESLint when a project is built.</Description>
     <PackageTags>eslint javascript lint linter msbuild</PackageTags>
-    <Version>1.0.0-alpha</Version>
     <InformationalVersion>This is a prerelease package!</InformationalVersion>
     
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
@@ -21,6 +20,13 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <!-- forces SDK to copy dependencies into build output to make packing easier -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
+
+    <VersionSuffix Condition=" '$(BUILD_BUILDID)' != '' ">$(VersionSuffix).$(BUILD_BUILDID)</VersionSuffix>
   </PropertyGroup>
   
   <ItemGroup>
