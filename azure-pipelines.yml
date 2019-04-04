@@ -27,7 +27,13 @@ steps:
     command: pack
     packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
  
+ - script: |
+    for file in $(Build.ArtifactStagingDirectory)/packages/*; do   
+        echo "##vso[task.setvariable variable=ESLINT_NUGET_PACKAGE]$(basename $file)";
+    done;
+
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifacts
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/packages/$(ESLINT_NUGET_PACKAGE)'
+    artifactName: Package
