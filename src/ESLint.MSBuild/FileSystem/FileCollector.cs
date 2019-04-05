@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace ESLint.MSBuild.FileSystem
 {
-    internal sealed class FileCollector
+    public class FileCollector : IFileCollector
     {
-        internal static FileCollectorResult GetFiles(DirectoryInfo projectDirectory, List<string> fileExtensions)
+        public FileCollectorResult GetFiles(DirectoryInfo projectDirectory, List<string> fileExtensions)
         {
             var fileCollectorResult = new FileCollectorResult() { FilePaths = new List<string>() };
             fileCollectorResult.IgnorePath = RecursiveParentFoldersForFile(projectDirectory, ".eslintignore");
@@ -19,7 +19,7 @@ namespace ESLint.MSBuild.FileSystem
             return fileCollectorResult;
         }
 
-        public static string RecursiveParentFoldersForFile(DirectoryInfo projectDirectory, string filename)
+        public string RecursiveParentFoldersForFile(DirectoryInfo projectDirectory, string filename)
         {
             var filePath = projectDirectory.EnumerateFiles(filename).FirstOrDefault()?.FullName;
             if (!string.IsNullOrEmpty(filePath)) return filePath;
@@ -35,7 +35,7 @@ namespace ESLint.MSBuild.FileSystem
             return null;
         }
 
-        public static string GetESLintPath()
+        public string GetESLintPath()
         {
             var npmPath = Environment.GetEnvironmentVariable("PATH").Split(';').Where(x => x.Contains("npm")).First();
             return Path.Combine(npmPath, "eslint.cmd");

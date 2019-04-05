@@ -2,10 +2,13 @@
 using ESLint.MSBuild.Linting;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using System;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+
+#if DEBUG
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("ESLint.MSBuild.Tests")]
+#endif
 
 namespace ESLint.MSBuild
 {
@@ -14,11 +17,13 @@ namespace ESLint.MSBuild
         [Required]
         public string ProjectPath { get; set; }
         private ILintController LintController { get; set; }
+        private IFileCollector FileCollector { get; set; }
 
-        public ESLintTask() : this(new LintController()) { }
-        internal ESLintTask(ILintController lintController)
+        public ESLintTask() : this(new LintController(), new FileCollector()) { }
+        internal ESLintTask(ILintController lintController, IFileCollector fileCollector)
         {
             this.LintController = lintController;
+            this.FileCollector = fileCollector;
         }
 
         public override bool Execute()

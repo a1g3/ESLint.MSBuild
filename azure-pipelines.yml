@@ -11,7 +11,7 @@ strategy:
       imageName: 'windows-2019'
 
 variables:
-  buildConfiguration: 'Release'
+  buildConfiguration: 'Debug'
 
 steps:
 - task: DotNetCoreInstaller@0
@@ -25,7 +25,13 @@ steps:
   inputs:
     command: build
     projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration)' 
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: Run tests
+  inputs:
+    command: test
+    projects: 'src/ESLint.MSBuild.Tests/ESLint.MSBuild.Tests.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: Generate NuGet package
