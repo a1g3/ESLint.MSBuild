@@ -59,7 +59,7 @@ namespace ESLint.MSBuild.Tests
 
             //ASSERT
             Assert.IsFalse(result);
-            Assert.AreEqual("C:\\Users\\Bob", filePathAssert);
+            Assert.IsTrue(filePathAssert.Contains("C:\\Users\\Bob"));
             Assert.AreEqual(1, fileExtensionsAssert.Count);
             Assert.IsTrue(fileExtensionsAssert.Contains("js"));
             Assert.AreEqual(1, buildErrorEventArgsAssert.Count);

@@ -21,10 +21,10 @@ steps:
     version: '2.2.202' 
  
 - task: DotNetCoreCLI@2
-  displayName: Build project
+  displayName: Build solution
   inputs:
     command: build
-    projects: '**/*.csproj'
+    projects: '**/*.sln'
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
