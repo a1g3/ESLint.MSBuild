@@ -1,7 +1,5 @@
 ﻿using ESLint.MSBuild.Exceptions;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,13 +17,13 @@ namespace ESLint.MSBuild.Linting
             this.EslintPath = eslintPath;
         }
 
-        public async Task<List<string>> RunLinterAsync(string filePath, CancellationToken token)
+        public async Task<string> RunLinterAsync(string filePath, CancellationToken token)
         {
             var output = await RunEslintAsync(filePath, token);
             return output;
         }
 
-        internal async Task<List<string>> RunEslintAsync(string filePath, CancellationToken token)
+        internal async Task<string> RunEslintAsync(string filePath, CancellationToken token)
         {
             return await Task.Run(() =>
              {
@@ -42,20 +40,20 @@ namespace ESLint.MSBuild.Linting
 
                  var process = new Process { StartInfo = startInfo };
 
-                 List<string> error = new List<string>();
-                 List<string> output = new List<string>();
+                 string error = string.Empty;
+                 string output = string.Empty;
 
                  process.ErrorDataReceived += ErrorHandler;
                  process.OutputDataReceived += OutputHandler;
 
                  void ErrorHandler(object sender, DataReceivedEventArgs e)
                  {
-                     if (!string.IsNullOrEmpty(e.Data)) error.Add(e.Data);
+                     if (!string.IsNullOrEmpty(e.Data)) error += e.Data;
                  }
 
                  void OutputHandler(object sender, DataReceivedEventArgs e)
                  {
-                     if (!string.IsNullOrEmpty(e.Data)) output.Add(e.Data);
+                     if (!string.IsNullOrEmpty(e.Data)) error += e.Data;
                  }
 
                  try
@@ -67,9 +65,6 @@ namespace ESLint.MSBuild.Linting
                      process.BeginOutputReadLine();
 
                      process.WaitForExit();
-
-                     if (error.Any())
-                         throw new ESLintException(error.FirstOrDefault());
                  }
                  finally
                  {

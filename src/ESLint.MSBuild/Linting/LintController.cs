@@ -1,4 +1,5 @@
 ﻿using ESLint.MSBuild.FileSystem;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace ESLint.MSBuild.Linting
 {
     public class LintController : ILintController
     {
-        public async Task<List<string>> LintFilesAsync(string eslintPath, FileCollectorResult files)
+        public async Task<List<BaseResult>> LintFilesAsync(string eslintPath, FileCollectorResult files)
         {
-            var errors = new List<string>();
-            var linter = new Linter(eslintPath, ParseArguments(new[] { ("format", "visualstudio") }.ToList()));
+            var errors = new List<BaseResult>();
+            var linter = new Linter(eslintPath, ParseArguments(new[] { ("format", "json") }.ToList()));
             CancellationToken token = new CancellationToken();
 
             foreach (var file in files.FilePaths)
@@ -20,11 +21,11 @@ namespace ESLint.MSBuild.Linting
                 try
                 {
                     var process = await linter.RunLinterAsync(file, token);
-                    errors.AddRange(process);
+                    errors.Add(JsonConvert.DeserializeObject<ESLintResult>(process));
                 }
                 catch (Exception ex)
                 {
-                    errors.Add(ex.Message);
+                    errors.Add(new ESLintError() { Message = ex.Message });
                 }
             }
 

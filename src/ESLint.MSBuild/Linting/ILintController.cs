@@ -8,6 +8,6 @@ namespace ESLint.MSBuild.Linting
 {
     public interface ILintController
     {
-        Task<List<string>> LintFilesAsync(string eslintPath, FileCollectorResult files);
+        Task<List<BaseResult>> LintFilesAsync(string eslintPath, FileCollectorResult files);
     }
 }

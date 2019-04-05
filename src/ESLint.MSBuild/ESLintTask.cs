@@ -14,8 +14,6 @@ namespace ESLint.MSBuild
         [Required]
         public string ProjectPath { get; set; }
         private ILintController LintController { get; set; }
-        private readonly Regex ErrorRegex = new Regex(@"(.*)\((\d+),(\d+)\): (error|warning) (.*) : (.*)");
-        private readonly Regex ProblemRegex = new Regex(@"\d+ problem");
 
         public ESLintTask() : this(new LintController()) { }
         internal ESLintTask(ILintController lintController)
@@ -37,29 +35,25 @@ namespace ESLint.MSBuild
             return !errors.Result.Any();
         }
 
-        private void AddErrorToErrorList(string outputError)
+        private void AddErrorToErrorList(BaseResult output)
         {
-            if (string.IsNullOrEmpty(outputError)) return;
-
-            if (ErrorRegex.IsMatch(outputError))
+            if(output is ESLintResult eslintResult)
             {
-                var errorParts = ErrorRegex.Split(outputError);
-
-                if(errorParts[4].Equals("error", StringComparison.OrdinalIgnoreCase))
+                foreach (var message in eslintResult.Messages)
                 {
-                    BuildErrorEventArgs errorEvent = new BuildErrorEventArgs("", errorParts[5], errorParts[1], int.Parse(errorParts[2]), int.Parse(errorParts[3]), 0, 0, errorParts[6], "", "");
-                    BuildEngine.LogErrorEvent(errorEvent);
+                    if (message.IsFatal || message.Severity is SeverityLevel.ERROR)
+                    {
+                        BuildErrorEventArgs errorEvent = new BuildErrorEventArgs("", message.RuleId, eslintResult.FilePath, message.Line, message.Column, message.EndLine, message.EndColumn, message.Message, "", "");
+                        BuildEngine.LogErrorEvent(errorEvent);
+                    }
+                    else if(message.Severity is SeverityLevel.WARNING)
+                    {
+                        BuildWarningEventArgs warningEvent = new BuildWarningEventArgs("", message.RuleId, eslintResult.FilePath, message.Line, message.Column, message.EndLine, message.EndColumn, message.Message, "", "");
+                        BuildEngine.LogWarningEvent(warningEvent);
+                    }
                 }
-                else if(errorParts[4].Equals("warning", StringComparison.OrdinalIgnoreCase))
-                {
-                    BuildWarningEventArgs warningEvent = new BuildWarningEventArgs("", errorParts[5], errorParts[1], int.Parse(errorParts[2]), int.Parse(errorParts[3]), 0, 0, errorParts[6], "", "");
-                    BuildEngine.LogWarningEvent(warningEvent);
-                }
-            } else
-            {
-                if (ProblemRegex.IsMatch(outputError)) return;
-                this.Log.LogError(outputError);
-            }
+            } else if(output is ESLintError eslintError)
+                this.Log.LogError(eslintError.Message);
         }
     }
 }

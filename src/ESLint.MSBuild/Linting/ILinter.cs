@@ -6,6 +6,6 @@ namespace ESLint.MSBuild.Linting
 {
     internal interface ILinter
     {
-        Task<List<string>> RunLinterAsync(string filePath, CancellationToken token);
+        Task<string> RunLinterAsync(string filePath, CancellationToken token);
     }
 }
